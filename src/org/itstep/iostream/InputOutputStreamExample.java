@@ -9,7 +9,28 @@ public class InputOutputStreamExample {
 //        mainMethods("file.txt");
 //        byteArrayExample();
 //        fileInputOutputStreamExample("file.txt");
-        pipedInputOutputStream();
+//        pipedInputOutputStream();
+        String data = workingTryWithResources("file.txt");
+        System.out.println(data);
+    }
+
+    public static String workingTryWithResources(String filename) throws IOException {
+        try (
+                InputStream io = new FileInputStream(filename);
+                BufferedInputStream bf = new BufferedInputStream(io)
+        ) {
+            int available = bf.available();
+            byte[] bytes = new byte[available];
+            int counter = 0;
+            int i;
+            while ((i = bf.read()) != -1) {
+                bytes[counter] = (byte) i;
+                counter++;
+            }
+            return new String(bytes, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IOException(e);
+        }
     }
 
     public static void pipedInputOutputStream() throws IOException {
